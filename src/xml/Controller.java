@@ -2,8 +2,12 @@ package xml;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +27,7 @@ public class Controller {
 	private boolean fileExist = false;
 	StringBuilder str_in = new StringBuilder();
     StringBuilder stringNoTabs = new StringBuilder();
+    StringBuilder minifiedString = new StringBuilder();
     StringBuilder tempMinifiedString = new StringBuilder();
 	
 	void init(Stage s) {
@@ -32,6 +37,9 @@ public class Controller {
 	public void chooseXMLFile(ActionEvent actionevent){
 		FileChooser filechooser = new FileChooser();
         File file = filechooser.showOpenDialog(stage); 		//file path
+        
+        str_in = new StringBuilder();					//reinstantiation to reset the string when we choose another file
+        stringNoTabs = new StringBuilder();				//reinstantiation to reset the string when we choose another file
         
         tfOut.getChildren().clear();
         tfIn.getChildren().clear();
@@ -96,13 +104,12 @@ public class Controller {
 	}
 	 
 	public void minify(ActionEvent action){
-		
+		minifiedString = new StringBuilder();				//reinstantiation to reset the string when we minify again or another file
 		//Check if a file has been chosen then clears the text flow output box.
 		if(fileExist){
 			
 			tfOut.getChildren().clear();
 			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
-			StringBuilder minifiedString = new StringBuilder();		
 			
 			//Iterate over the length of stringNoTabs removing all \n in the file to be written in one line. then stores it in minifiedString.
 			for(int i = 0; i < stringNoTabs.length(); i++){
@@ -141,6 +148,41 @@ public class Controller {
 	}
 	 
 	public void save(ActionEvent action){
-	 
-	}	 
+		if(fileExist){
+			FileChooser filechooser = new FileChooser();
+			File file = filechooser.showSaveDialog(stage);
+			
+			if(file != null && minifiedString.toString() != null) {
+				if(!minifiedString.toString().isEmpty())
+					savecontent(file, minifiedString.toString());
+				
+				else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("ERROR");
+					String s ="Please Make Changes in the XML File First";
+					alert.setContentText(s);
+					alert.show();
+				}
+			}
+ 
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Choose XML File First";
+			alert.setContentText(s);
+			alert.show();
+		}
+	}
+
+	void savecontent(File file,String minifiedString) {
+		try {
+			PrintWriter p = new PrintWriter(file);
+			p.write(minifiedString);
+			p.close();
+		} 
+		catch (FileNotFoundException ex) {
+			Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 }
