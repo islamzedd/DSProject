@@ -29,6 +29,7 @@ public class Controller {
     StringBuilder stringNoTabs = new StringBuilder();
     StringBuilder minifiedString = new StringBuilder();
     StringBuilder tempMinifiedString = new StringBuilder();
+    TreeNode root = null;
 	
 	void init(Stage s) {
         stage=s;
@@ -68,6 +69,12 @@ public class Controller {
                         line = line.replaceAll("  ","");
                         stringNoTabs.append(line).append("\n");
                     }
+                    
+                    
+                    String stringToBeParsed =  str_in.toString();
+                    TreeNode parent = new TreeNode(null,null,-1,null);
+                    XMLTree xmlTree = new XMLTree(parent);
+                    root=xmlTree.parseXML(stringToBeParsed,0,parent);
         		}
         		
         	    catch (IOException e) {
