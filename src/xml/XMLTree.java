@@ -23,7 +23,7 @@ public class XMLTree {
             if (n > stringToBeParsed.length() ) break;
             
             //if its an opening tag
-            if (c == '<' && stringToBeParsed.charAt(n) != '/' )
+            if (c == '<' && stringToBeParsed.charAt(n) != '/' ) 
             {
             	//create a node for it and add it as a child to the root
                 String name = "";
