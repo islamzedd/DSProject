@@ -150,24 +150,19 @@ public class Controller {
 		}
 	}
 	 
-	public void minify(ActionEvent action){
-		StringBuilder minifiedString = new StringBuilder();				//reinstantiation to reset the string when we minify again or another file
+	public void minify(ActionEvent action){				
 		//Check if a file has been chosen then clears the text flow output box.
 		if(fileExist){
 			
 			tfOut.getChildren().clear();
 			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
 			
-			//Iterate over the length of latestString removing all \n in the file to be written in one line. then stores it in minifiedString.
-			for(int i = 0; i < latestString.length(); i++){
-				if(latestString.charAt(i) != '\n')
-					minifiedString.append(latestString.charAt(i));
-			}
+			latestString.setLength(0);
+			mini(root.children.get(0));
 			
 			//Creating a Text t to be displayed in the text flow output.
-			Text t = new Text(minifiedString.toString());
+			Text t = new Text(latestString.toString());
 			tfOut.getChildren().add(t);
-			latestString = minifiedString;
 		}
 		
 		//Give an error when there is no file path chosen.
@@ -179,6 +174,19 @@ public class Controller {
 			alert.setContentText(s);
 			alert.show();
 
+		}
+	}
+	
+	private void mini(TreeNode node){
+		if(node.children.size() > 0) {
+			latestString.append("<" + node.name + ">");
+			for(TreeNode child : node.children) {
+				mini(child);
+			}
+			latestString.append("</" + node.name + ">");
+		}
+		else {
+			latestString.append("<" + node.name + ">" + node.value + "</" + node.name + ">");
 		}
 	}
 	 
