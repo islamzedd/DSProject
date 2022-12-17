@@ -107,7 +107,47 @@ public class Controller {
 	}
 	
 	public void addXMLFormat(ActionEvent action){
-		 
+		if(fileExist){
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+		
+			latestString.setLength(0);
+			prettify(root.children.get(0));
+			
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(latestString.toString());
+			tfOut.getChildren().add(t);
+		}
+		//Give an error when there is no file path chosen.
+		else{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
+		} 
+	}
+	
+	private void prettify(TreeNode node) {
+		if(node.children.size() > 0) {
+			for(int i=0 ;i< node.depth;i++) {
+				latestString.append("\t");
+			}
+			latestString.append("<" + node.name + ">\n");
+			for(TreeNode child : node.children) {
+				prettify(child);
+			}
+			for(int i=0 ;i< node.depth;i++) {
+				latestString.append("\t");
+			}
+			latestString.append("</" + node.name + ">\n");
+		}
+		else {
+			for(int i=0 ;i< node.depth;i++) {
+				latestString.append("\t");
+			}
+			latestString.append("<" + node.name + ">" + node.value + "</" + node.name + ">\n");
+		}
 	}
 	 
 	public void minify(ActionEvent action){
