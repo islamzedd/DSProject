@@ -446,6 +446,8 @@ public class Controller {
 			//Creating a Text t to be displayed in the text flow output.
 			Text t = new Text(jsonString.toString());
 			tfOut.getChildren().add(t);
+			
+			jsonString.setLength(0);
 		}
 		//Give an error when there is no file path chosen.
 		else{
@@ -668,4 +670,15 @@ public class Controller {
 			Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+	
+	Graph populateGraph() {
+		Graph graph = new Graph();
+		jsonString.append("{\n");
+		preorderTraverse(root.children.get(0));
+		jsonString.append("}\n");
+		graph.parseToGraph(jsonString.toString());
+		jsonString.setLength(0);
+		return graph;
+	}
+	
 }
