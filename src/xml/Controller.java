@@ -103,7 +103,249 @@ public class Controller {
 	}
 	 
 	public void checkXMLErrors(ActionEvent action){
-		
+		char c;
+		int i = 0;			//index of char in latestString
+		int line = 1;
+		char temp;
+		c = latestString.charAt(i);
+		temp = latestString.charAt(i);
+		String tag = "";
+		String data = "";
+		Stack<String> openTags = new Stack<String>();	//stack lel opening tags
+		System.out.println(latestString.length());
+		while(i < latestString.length()) {
+			
+			if(i >= latestString.length()) break;
+			
+			//Section 1: open tag
+			if(c == '<' && (char)latestString.charAt(i) != '/') { 
+				//getting tag name
+				while(latestString.charAt(i) != '>') {
+					c = latestString.charAt(i++);
+					temp = latestString.charAt(i);
+					if((c != '<') && (c != '>') && (c != '/')) {
+						tag += c;
+					}
+				}
+				//pushing tag into stack
+				openTags.push(tag);
+				tag = "";
+				c = latestString.charAt(++i);
+				temp = latestString.charAt(i);
+			}
+			
+			//Section 2: skip tabs and spaces and new lines
+			while (c == '\n' || c == '\t' || c == '\r' || c == ' ') {
+                c = latestString.charAt(i++);
+                if (i >= latestString.length() ) break;
+                if(c == '\n')
+                	line++;
+            }
+            if (i >= latestString.length() ) break;
+
+			//Section 3: data
+			if(c != '<') {
+				//skip data
+				while (c != '<')
+	            {
+	                c = latestString.charAt(i++);
+	                temp = latestString.charAt(i);
+	                data += c;
+	                if (i >= latestString.length() ) break;
+	                if (c == '\n')
+	                	line++;
+	            }
+				//First Case: open tag after data
+				if(c == '<' && (char)latestString.charAt(i) != '/') {
+					//data in the beginning
+					if (openTags.isEmpty()) {
+						System.out.print("Error in line ");
+						System.out.print(line);
+						System.out.println(": You can't write data in the beginning");
+					}
+					//data not in the beginning
+					else {
+						//open tag was a data tag
+						if (openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post")) {
+							System.out.print("Error in line ");
+							System.out.print(line - 1);
+							System.out.print(": </");
+							System.out.print(openTags.peek());
+							System.out.println("> missing");
+							//maybe handle error here
+							openTags.pop();
+						}
+						//open tag isn't a data tag
+						else {
+							System.out.print("Error in line ");
+							System.out.print(line - 1);
+							System.out.println(": You can't write data here");
+						}
+						
+					}
+				}
+				
+				//Second Case: closing tag after data
+				else if(c == '<'  && (char)latestString.charAt(i) == '/') {
+					//getting the tag name
+					while(latestString.charAt(i) != '>') {
+						c = (char)latestString.charAt(i++);
+						temp = (char)latestString.charAt(i);
+						if((c != '<') && (c != '>') && (c != '/')) {
+							tag += c;
+						}
+					}
+					//if XML starts with missing opening data tag
+					if (openTags.isEmpty()) {
+						System.out.print("Error in line ");
+						System.out.print(line - 1);
+						System.out.print(": <");
+						System.out.print(tag);
+						System.out.println("> missing in the beginning");
+						c = latestString.charAt(++i);
+					}
+					else {
+						//correct closing after data
+						if(tag.equals(openTags.peek())) {
+							openTags.pop();
+							tag = "";
+							c = (char)latestString.charAt(++i);
+						}
+						//not correct closing after data
+						else {
+							//first case: two mismatch data tags and giving favor for last
+							if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
+							&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post"))) {
+								System.out.print("Error in line ");
+								System.out.print(line);
+								System.out.print(": <");
+								System.out.print(tag);
+								System.out.print("> instead of <");
+								System.out.print(openTags.peek());
+								System.out.println(">");
+								openTags.pop();
+								tag = "";
+								c = (char)latestString.charAt(++i);
+							}
+							//second case: there's no opening data tag
+							else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
+							&&!(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post"))){
+								System.out.print("Error in line ");
+								System.out.print(line);
+								System.out.print(": <");
+								System.out.print(tag);
+								System.out.println("> missing in the beginning");
+								tag = "";
+								c = (char)latestString.charAt(++i);
+							}
+							//third case: there's no closing data tag
+							else {
+								System.out.print("Error in line ");
+								System.out.print(line - 1);
+								System.out.print(": </");
+								System.out.print(openTags.peek());
+								System.out.println("> missing");
+								openTags.pop();						//we remove the data opening tag
+								//there's no error
+								if(tag.equals(openTags.peek())) {
+									openTags.pop();
+									tag = "";
+									c = (char)latestString.charAt(++i);
+								}
+								//missing closing tags till we find it
+								else if(!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
+									while (!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
+										System.out.print("Error in line ");
+										System.out.print(line - 1);
+										System.out.print(": </");
+										System.out.print(openTags.peek());
+										System.out.println("> missing");
+										openTags.pop();
+									}
+									openTags.pop();
+									tag = "";
+									c = (char)latestString.charAt(++i);
+								}
+								else {
+									System.out.println("extra");
+									tag = "";
+									c = (char)latestString.charAt(++i);
+								}
+							}
+							
+						}
+					}
+				}
+			}
+			
+			//Section 3: closing tag
+			if(c == '<'  && (char)latestString.charAt(i) == '/') {
+				//getting the tag name
+				while(latestString.charAt(i) != '>') {
+					c = (char)latestString.charAt(i++);
+					temp = (char)latestString.charAt(i);
+					if((c != '<') && (c != '>') && (c != '/')) {
+						tag += c;
+					}
+				}
+				//closing tag in the beginning
+				if (openTags.isEmpty()) {
+					System.out.print("Error in line ");
+					System.out.print(line - 1);
+					System.out.print(": <");
+					System.out.print(tag);
+					System.out.println("> missing in the beginning");
+					c = (char)latestString.charAt(++i);
+				}
+				else {
+					//correct closing tag
+					if(tag.equals(openTags.peek())) {
+						openTags.pop();
+						tag = "";
+						c = (char)latestString.charAt(++i);
+					}
+					//error handling
+					//missing closing tags till we find it
+					else if(!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
+						while (!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
+							System.out.print("Error in line ");
+							System.out.print(line - 1);
+							System.out.print(": </");
+							System.out.print(openTags.peek());
+							System.out.println("> missing");
+							openTags.pop();
+						}
+						if (tag.equals(openTags.peek())) {
+							openTags.pop();
+							tag = "";
+						}
+						c = (char)latestString.charAt(++i);
+					}
+					
+					else {
+						System.out.print("Error in line ");
+						System.out.print(line);
+						System.out.print(": </");
+						System.out.print(tag);
+						System.out.println("> might be missing an openning tag");
+						tag = "";
+						c = (char)latestString.charAt(++i);
+					}
+				}	
+			}
+		}
+		while(!openTags.isEmpty()) {
+			System.out.print("Error in line ");
+			System.out.print(line - 1);
+			System.out.print(": </");
+			System.out.print(openTags.peek());
+			System.out.println("> missing");
+			openTags.pop();
+		}
+		System.out.println(line);
+		System.out.println(latestString);
+		//lw value n2so closing w b3do opening zwd closing 3latol
+		 //lw 3ndk values yb2a closing 3latol lw closing l 7aga fel stack sbo w zwd lw m4 l7aga fel stack ems7 w 3dl	 
 	}
 	
 	public void addXMLFormat(ActionEvent action){
