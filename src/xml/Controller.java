@@ -13,10 +13,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import xml.Encoder;
 
 public class Controller {
 	private Stage stage;
@@ -561,11 +563,71 @@ public class Controller {
 	}
 	 
 	public void compress(ActionEvent a) {
-		 
+		String compStr = Encoder.Encode(str_in.toString());
+		if (!fileExist) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String message ="Please Choose XML File First";
+			alert.setContentText(message);
+			alert.show();
+			return;
+		}
+		
+		FileChooser filechooser = new FileChooser();
+		File file = filechooser.showSaveDialog(stage);
+		if (file == null || compStr == null) {
+			return;
+		}
+		
+		if (str_in.toString().isEmpty()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String message ="There is a Problem in The compression process.";
+			alert.setContentText(message);
+            alert.show();
+            return;
+		}
+		
+		Encoder.writeBytes(file, compStr);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Compress Data");
+		String message ="Data Successfully Compressed.";
+		alert.setContentText(message);
+		alert.show();
 	}
 	 
 	public void decompress(ActionEvent a) {
-		 
+		FileChooser filechooser = new FileChooser();
+		tfOut.setStyle("-fx-border-color: Yellow;");
+		tfIn.setStyle("-fx-border-color: Yellow;");
+		File file = filechooser.showOpenDialog(stage);
+		
+		tfOut.getChildren().clear();
+		tfIn.getChildren().clear();
+		fileExist = true;
+		
+		String decodedString = Encoder.readAndDecodeFile(file);
+		//str_in.append(decodedString);
+		//latestString.append(decodedString);
+		
+		try {
+			String stringToBeParsed =  decodedString.toString();
+	        TreeNode parent = new TreeNode(null,null,-1,null);
+	        XMLTree xmlTree = new XMLTree(parent);
+	        root=xmlTree.parseXML(stringToBeParsed,0,parent);
+	        root.closingBracket = "}";
+		}
+		catch (IOException e) {
+	    	Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("ERROR");
+	    	String s = e.getMessage();
+	    	alert.setContentText(s);
+	    	alert.show();
+	    }
+		
+		Text t = new Text(decodedString);
+		t.setFill(Color.BLACK);
+		tfIn.getChildren().add(t);
 	}
 	 
 	public void save(ActionEvent action){
