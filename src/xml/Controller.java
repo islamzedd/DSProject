@@ -124,7 +124,6 @@ public class Controller {
 			String data = "";
 			Stack<String> openTags = new Stack<String>();	//stack lel opening tags
 			Queue<String> correctTags = new LinkedList<String>();	//stack errors
-			System.out.println(latestString.length());
 			while(i < latestString.length()) {
 				
 				if(i >= latestString.length()) break;
@@ -587,7 +586,8 @@ public class Controller {
 			//Creating a Text t to be displayed in the text flow output.
 			Text t = new Text(jsonString.toString());
 			tfOut.getChildren().add(t);
-			
+			latestString.setLength(0);
+			latestString.append(jsonString);
 			jsonString.setLength(0);
 		}
 		//Give an error when there is no file path chosen.
@@ -706,7 +706,7 @@ public class Controller {
 	}
 	 
 	public void compress(ActionEvent a) {
-		String compStr = Encoder.Encode(str_in.toString());
+		String compStr = Encoder.Encode(latestString.toString());
 		if (!fileExist) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR");
@@ -722,7 +722,7 @@ public class Controller {
 			return;
 		}
 		
-		if (str_in.toString().isEmpty()) {
+		if (latestString.toString().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR");
 			String message ="There is a Problem in The compression process.";
