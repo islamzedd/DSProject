@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,12 +110,11 @@ public class Controller {
 		char c;
 		int i = 0;			//index of char in latestString
 		int line = 1;
-		char temp;
 		c = latestString.charAt(i);
-		temp = latestString.charAt(i);
 		String tag = "";
 		String data = "";
 		Stack<String> openTags = new Stack<String>();	//stack lel opening tags
+		Queue<String> correctTags = new LinkedList<String>();	//stack errors
 		System.out.println(latestString.length());
 		while(i < latestString.length()) {
 			
@@ -124,35 +125,36 @@ public class Controller {
 				//getting tag name
 				while(latestString.charAt(i) != '>') {
 					c = latestString.charAt(i++);
-					temp = latestString.charAt(i);
 					if((c != '<') && (c != '>') && (c != '/')) {
 						tag += c;
 					}
 				}
 				//pushing tag into stack
 				openTags.push(tag);
+				correctTags.add("o" + tag); //O(n^2)
 				tag = "";
 				c = latestString.charAt(++i);
-				temp = latestString.charAt(i);
+				i++;
 			}
 			
 			//Section 2: skip tabs and spaces and new lines
 			while (c == '\n' || c == '\t' || c == '\r' || c == ' ') {
-                c = latestString.charAt(i++);
                 if (i >= latestString.length() ) break;
                 if(c == '\n')
                 	line++;
+                c = latestString.charAt(i++);
             }
             if (i >= latestString.length() ) break;
 
 			//Section 3: data
 			if(c != '<') {
-				//skip data
+				//skip data and store it for future use
+				data = "";
 				while (c != '<')
-	            {
+	            {	
+	                if (c != '<' && c != '>')
+	                	data += c;
 	                c = latestString.charAt(i++);
-	                temp = latestString.charAt(i);
-	                data += c;
 	                if (i >= latestString.length() ) break;
 	                if (c == '\n')
 	                	line++;
@@ -164,6 +166,7 @@ public class Controller {
 						System.out.print("Error in line ");
 						System.out.print(line);
 						System.out.println(": You can't write data in the beginning");
+						data = "";
 					}
 					//data not in the beginning
 					else {
@@ -175,6 +178,9 @@ public class Controller {
 							System.out.print(openTags.peek());
 							System.out.println("> missing");
 							//maybe handle error here
+							correctTags.add("d" + data);
+							correctTags.add("/" + openTags.peek());
+							tag = "";
 							openTags.pop();
 						}
 						//open tag isn't a data tag
@@ -182,6 +188,7 @@ public class Controller {
 							System.out.print("Error in line ");
 							System.out.print(line - 1);
 							System.out.println(": You can't write data here");
+							data = "";
 						}
 						
 					}
@@ -192,12 +199,11 @@ public class Controller {
 					//getting the tag name
 					while(latestString.charAt(i) != '>') {
 						c = (char)latestString.charAt(i++);
-						temp = (char)latestString.charAt(i);
 						if((c != '<') && (c != '>') && (c != '/')) {
 							tag += c;
 						}
 					}
-					//if XML starts with missing opening data tag
+					//if XML starts with missing opening data tag (not needed actually)
 					if (openTags.isEmpty()) {
 						System.out.print("Error in line ");
 						System.out.print(line - 1);
@@ -209,25 +215,31 @@ public class Controller {
 					else {
 						//correct closing after data
 						if(tag.equals(openTags.peek())) {
+							correctTags.add("d" + data);
+							correctTags.add("/" + openTags.peek());
 							openTags.pop();
 							tag = "";
-							c = (char)latestString.charAt(++i);
+							c = latestString.charAt(++i);
+							i++;
 						}
 						//not correct closing after data
 						else {
-							//first case: two mismatch data tags and giving favor for last
+							//first case: two mismatch data tags and giving favor for first
 							if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
 							&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post"))) {
 								System.out.print("Error in line ");
 								System.out.print(line);
-								System.out.print(": <");
-								System.out.print(tag);
-								System.out.print("> instead of <");
+								System.out.print(": </");
 								System.out.print(openTags.peek());
+								System.out.print("> instead of </");
+								System.out.print(tag);
 								System.out.println(">");
+								correctTags.add("d" + data);
+								correctTags.add("/" + openTags.peek());
 								openTags.pop();
 								tag = "";
-								c = (char)latestString.charAt(++i);
+								c = latestString.charAt(++i);
+								i++;
 							}
 							//second case: there's no opening data tag
 							else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
@@ -237,8 +249,12 @@ public class Controller {
 								System.out.print(": <");
 								System.out.print(tag);
 								System.out.println("> missing in the beginning");
+								correctTags.add("o" + tag);
+								correctTags.add("d" + data);
+								correctTags.add("/" + tag);
 								tag = "";
-								c = (char)latestString.charAt(++i);
+								c = latestString.charAt(++i);
+								i++;
 							}
 							//third case: there's no closing data tag
 							else {
@@ -247,12 +263,16 @@ public class Controller {
 								System.out.print(": </");
 								System.out.print(openTags.peek());
 								System.out.println("> missing");
+								correctTags.add("d" + data);
+								correctTags.add("/" + openTags.peek());
 								openTags.pop();						//we remove the data opening tag
 								//there's no error
 								if(tag.equals(openTags.peek())) {
+									correctTags.add("/" + openTags.peek()); //just add the closing bcz openning is there already
 									openTags.pop();
 									tag = "";
 									c = (char)latestString.charAt(++i);
+									i++;
 								}
 								//missing closing tags till we find it
 								else if(!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
@@ -262,16 +282,20 @@ public class Controller {
 										System.out.print(": </");
 										System.out.print(openTags.peek());
 										System.out.println("> missing");
+										correctTags.add("/" + tag);
 										openTags.pop();
 									}
+									correctTags.add("/" + tag);
 									openTags.pop();
 									tag = "";
 									c = (char)latestString.charAt(++i);
+									i++;
 								}
 								else {
 									System.out.println("extra");
 									tag = "";
 									c = (char)latestString.charAt(++i);
+									i++;
 								}
 							}
 							
@@ -281,16 +305,15 @@ public class Controller {
 			}
 			
 			//Section 3: closing tag
-			if(c == '<'  && (char)latestString.charAt(i) == '/') {
+			if(c == '<'  && latestString.charAt(i) == '/') {
 				//getting the tag name
 				while(latestString.charAt(i) != '>') {
 					c = (char)latestString.charAt(i++);
-					temp = (char)latestString.charAt(i);
 					if((c != '<') && (c != '>') && (c != '/')) {
 						tag += c;
 					}
 				}
-				//closing tag in the beginning
+				//first openning tag missing (for now as there might be more). there might be more of it
 				if (openTags.isEmpty()) {
 					System.out.print("Error in line ");
 					System.out.print(line - 1);
@@ -298,13 +321,17 @@ public class Controller {
 					System.out.print(tag);
 					System.out.println("> missing in the beginning");
 					c = (char)latestString.charAt(++i);
+					i++;
+					correctTags.add("/" + tag); //handle this missing openning tag in the beginning in validation
 				}
 				else {
 					//correct closing tag
 					if(tag.equals(openTags.peek())) {
+						correctTags.add("/" + tag);
 						openTags.pop();
 						tag = "";
-						c = (char)latestString.charAt(++i);
+						c = latestString.charAt(++i);
+						i++;
 					}
 					//error handling
 					//missing closing tags till we find it
@@ -315,13 +342,16 @@ public class Controller {
 							System.out.print(": </");
 							System.out.print(openTags.peek());
 							System.out.println("> missing");
+							correctTags.add("/" + openTags.peek());
 							openTags.pop();
 						}
 						if (tag.equals(openTags.peek())) {
+							correctTags.add("/" + tag);
 							openTags.pop();
 							tag = "";
 						}
 						c = (char)latestString.charAt(++i);
+						i++;
 					}
 					
 					else {
@@ -332,6 +362,7 @@ public class Controller {
 						System.out.println("> might be missing an openning tag");
 						tag = "";
 						c = (char)latestString.charAt(++i);
+						i++;
 					}
 				}	
 			}
@@ -342,12 +373,85 @@ public class Controller {
 			System.out.print(": </");
 			System.out.print(openTags.peek());
 			System.out.println("> missing");
+			correctTags.add("/" + tag);
 			openTags.pop();
 		}
-		System.out.println(line);
-		System.out.println(latestString);
-		//lw value n2so closing w b3do opening zwd closing 3latol
-		 //lw 3ndk values yb2a closing 3latol lw closing l 7aga fel stack sbo w zwd lw m4 l7aga fel stack ems7 w 3dl	 
+		
+		//XML file correction and pretifying
+		StringBuilder correctString = new StringBuilder();
+		Object[] arrayTags = correctTags.toArray(); //converting the queue to array
+		String correctLine = new String();
+		String element = new String();
+		int k = 0;
+		int tagNum = 1;
+		int tagSize = correctTags.size();
+		for (i = 0; i < tagSize; i++) {
+			correctLine = (String)arrayTags[i];
+			
+			//if it's an openning tag
+			if (correctLine.charAt(0) == 'o') {
+				element = correctLine.substring(1);
+				correctString.append("<" + element + ">");
+				if (!element.equals("id") && !element.equals("name")) {
+					correctString.append("\n");
+					for (int j = 0; j < tagNum; j++) {
+						correctString.append("\t");
+					}
+				}
+				tagNum++;
+				correctTags.remove();
+			}
+			
+			//if it's data
+			else if(correctLine.charAt(0) == 'd') {
+				element = correctLine.substring(1);
+				
+				//if the data is "id"
+				if (arrayTags[i-1].equals("oid")) {
+					while (element.charAt(k) >= '0' && element.charAt(k) <= '9') {
+						correctString.append(element.charAt(k));
+						k++;
+						if (k >= element.length())
+							break;
+					}
+					k = 0;
+				}
+				
+				//if the data is "name"
+				else if (arrayTags[i-1].equals("oname")) {
+					while (element.charAt(k) != '\n' && element.charAt(k) != '\t') {
+						correctString.append(element.charAt(k));
+						k++;
+						if (k >= element.length())
+							break;
+					}
+					k = 0;
+				}
+				
+				//if the data is posts
+				else {
+					while (element.charAt(k) != '\t') {
+						correctString.append(element.charAt(k));
+						k++;
+						if (k >= element.length())
+							break;
+					}
+					k = 0;
+				}
+				tagNum++;
+			}
+			
+			//if it's closing tag
+			else if(correctLine.charAt(0) == '/') {
+				tagNum -=2;
+				element = correctLine.substring(1);
+				correctString.append("</" + element + ">\n");
+				for (int j = 1; j < tagNum; j++) {
+					correctString.append("\t");
+				}
+			}
+		}
+		System.out.println(correctString);
 	}
 	
 	public void addXMLFormat(ActionEvent action){
