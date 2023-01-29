@@ -478,7 +478,7 @@ public class Controller {
             //show the correct xml
             latestString.setLength(0);
             prettify(root.children.get(0));
-			errorString.append(latestString);
+			errorString.append("\n" + "\n"+ "Error Correction" + "\n" + latestString);
 			Text t = new Text(errorString.toString());
 			tfOut.getChildren().add(t);
 		}
