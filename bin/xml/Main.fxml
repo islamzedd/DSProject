@@ -30,7 +30,7 @@
             <Font size="41.0" />
          </font>
       </Label>
-      <Pane layoutY="92.0" prefHeight="319.0" prefWidth="127.0" style="-fx-background-color: snow; -fx-border-color: yellow;" AnchorPane.bottomAnchor="261.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="1058.0" AnchorPane.topAnchor="92.0">
+      <Pane layoutY="92.0" prefHeight="319.0" prefWidth="127.0" style="-fx-background-color: snow; -fx-border-color: yellow;" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="1058.0" AnchorPane.topAnchor="92.0">
          <children>
          	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="14.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#chooseXMLFile" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Choose XML File" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
@@ -63,6 +63,21 @@
                </font>
             </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="274.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#decompress" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Decompress File " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="318.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostInfluencer" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Influencer" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="362.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostActive" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Active" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="406.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#suggestFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Suggest" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>

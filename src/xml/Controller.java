@@ -97,7 +97,7 @@ public class Controller {
         		tfIn.getChildren().add(text);
         		
     			latestStringCopy =latestStringCopy.append(latestString);
-    			
+    			populateGraph();
         	}
         	
         	//throw an error if the file is not .xml or .txt
@@ -601,7 +601,6 @@ public class Controller {
 			alert.show();
 
 		}
-		populateGraph();
 	}
 	
 	private boolean hasSiblingsWithSameName(TreeNode node) {
@@ -803,6 +802,18 @@ public class Controller {
 			alert.show();
 		}
 	}
+	
+	public void mostInfluencer(ActionEvent action){
+
+	}
+	
+	public void mostActive(ActionEvent action){
+
+	}
+	
+	public void suggestFollowers(ActionEvent action){
+
+	}
 
 	void savecontent(File file,String latestString) {
 		try {
@@ -821,73 +832,9 @@ public class Controller {
 		preorderTraverse(root.children.get(0));
 		jsonString.append("}\n");
 		graph.parseToGraph(jsonString.toString());
-		jsonString.setLength(0);
-		System.out.println(graph.getGraph());
-		
-		networkAnalysis(graph);
-		
+		jsonString.setLength(0);		
+		System.out.println(graph.getGraph().toString());
 		return graph;
-	}
-	
-	public void networkAnalysis(Graph graph) {
-		
-		Map<Integer, ArrayList<Integer>> analysisGraph = graph.getGraph();
-		ArrayList<Integer> conArr = new ArrayList<>();
-		int greaterFollowersCount = 0;
-		int mostFreq = 0;
-		int frequency = 0;
-		
-		//most influencer user
-		for(int i = 1; i <= analysisGraph.size(); i++) {
-			int followerCount = analysisGraph.get(i).size();
-			greaterFollowersCount = Math.max(greaterFollowersCount, followerCount);
-		}
-		
-		for(int i = 1; i <= analysisGraph.size(); i++) {
-			if(greaterFollowersCount == analysisGraph.get(i).size()) {
-				System.out.println("the most influencer user is of ID " + i + " with a follower count of " + greaterFollowersCount);
-			}
-		}
-		
-		//most active user
-		for(int i = 1; i <= analysisGraph.size(); i++) {
-			for(int j = 0; j < analysisGraph.get(i).size(); j++) {
-				conArr.add(analysisGraph.get(i).get(j));
-			}
-			
-		}
-		
-		for(int i = 0; i < conArr.size(); i++) {
-			int count = 0;
-			
-			for(int j = 0; j < conArr.size(); j++) {
-				if(conArr.get(i) == conArr.get(j)) {
-					count++;
-				}
-			}
-			
-			if(count > frequency) {
-				frequency = count;
-				mostFreq = conArr.get(i);
-			}
-		}
-		
-		System.out.println("the most active user is of ID " + mostFreq + ", " + "connected to " + frequency + " users");
-		
-		//suggest followers
-		for(int i = 1; i <= analysisGraph.size(); i++) {
-			System.out.print("user " + i + " can follow ");
-			for(int j = 0; j < analysisGraph.get(i).size(); j++) {
-				int l = analysisGraph.get(i).get(j);
-				System.out.println(l);
-//				for(int k = 0; k < ; k++) {
-//					System.out.print(" " + analysisGraph.get(l).get(k) + " ");
-//				}
-//				System.out.print("\n");
-			}
-			
-		}
-		
 	}
 	
 }

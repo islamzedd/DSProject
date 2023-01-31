@@ -18,6 +18,7 @@ public class Main extends Application{
         control.init(stage);
         Scene s=new Scene(root);
         stage.setScene(s);
+        stage.setResizable(false);
         stage.setTitle("XML ");
         stage.show();
         

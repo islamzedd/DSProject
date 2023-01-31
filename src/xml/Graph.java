@@ -5,6 +5,8 @@ import java.util.regex.*;
 
 public class Graph {
 	Map<Integer, ArrayList<Integer>> graph = new HashMap<Integer, ArrayList<Integer>>();
+	Map<Integer,String> idToName = new HashMap<Integer,String>();
+	Map<String,Integer> nameToId = new HashMap<String,Integer>();
 	
 	public Graph() {
 		
@@ -12,6 +14,34 @@ public class Graph {
 	
 	public void addUser(Integer name) {
 		graph.put(name,new ArrayList<Integer>());
+	}
+	
+	private void addname(Integer id,String name) {
+		idToName.put(id,name);
+	}
+	
+	public String getName(Integer id) {
+		String name = idToName.get(id);
+		if( name != null) {
+			return name;
+		}
+		else {
+			return "id not found";
+		}
+	}
+	
+	private void addId(String name,Integer id) {
+		nameToId.put(name.toLowerCase(),id);
+	}
+	
+	public Integer getId(String name) {
+		Integer id = nameToId.get(name.toLowerCase());
+		if( id != null) {
+			return id;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	
@@ -37,7 +67,10 @@ public class Graph {
 		Pattern followersPattern = Pattern.compile("followers");
 		Matcher followersMatcher = followersPattern.matcher(jsonString);
 		while(nameMatcher.find()) {
+			String name = jsonString.substring(nameMatcher.end()+4,jsonString.indexOf("\"",nameMatcher.end()+4));
 			int userId=Integer.parseInt(jsonString.substring(jsonString.lastIndexOf(',',nameMatcher.start())-2,jsonString.lastIndexOf(',',nameMatcher.start())-1));
+			this.addname(userId, name);
+			this.addId(name, userId);
 			this.addUser(userId);
 			int nameindex=nameMatcher.start();
 			if(followersMatcher.find(nameindex)) {
