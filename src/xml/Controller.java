@@ -48,7 +48,7 @@ public class Controller {
         
         str_in = new StringBuilder();					//reinstantiation to reset the string when we choose another file
         latestString = new StringBuilder();				//reinstantiation to reset the string when we choose another file
-        
+        latestStringCopy = new StringBuilder(); 		//reinstantiation to reset the string when we choose another file
         tfOut.getChildren().clear();
         tfIn.getChildren().clear();
         tfOut.setStyle(" -fx-border-color: Yellow;");
@@ -117,15 +117,16 @@ public class Controller {
 			tfOut.getChildren().clear();
 			tfOut.setStyle(" -fx-border-color: Yellow;");
 			char c;
-			int i = 0;			//index of char in latestString
+			int i = 0;			//index of char c in latestString
 			int line = 1;
+			boolean error = false;
 			latestString.setLength(0);
 			errorString.setLength(0);
 			latestString.append(latestStringCopy);
 			c = latestString.charAt(i);
 			String tag = "";
 			String data = "";
-			Stack<String> openTags = new Stack<String>();	//stack lel opening tags
+			Stack<String> openTags = new Stack<String>();	//stack openning tags
 			Queue<String> correctTags = new LinkedList<String>();	//stack errors
 			while(i < latestString.length()) {
 				
@@ -172,6 +173,7 @@ public class Controller {
 		            }
 					//First Case: open tag after data
 					if(c == '<' && (char)latestString.charAt(i) != '/') {
+						error = true;
 						//data in the beginning
 						if (openTags.isEmpty()) {
 							errorString.append("Error in line ");
@@ -182,13 +184,14 @@ public class Controller {
 						//data not in the beginning
 						else {
 							//open tag was a data tag
-							if (openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post")) {
+							if (openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") ||
+								openTags.peek().equals("post") || openTags.peek().equals("topic")) {
 								errorString.append("Error in line ");
 								errorString.append(line - 1);
 								errorString.append(": </");
 								errorString.append(openTags.peek());
 								errorString.append("> missing\n");
-								//maybe handle error here
+								//Error handling
 								correctTags.add("d" + data);
 								correctTags.add("/" + openTags.peek());
 								tag = "";
@@ -216,6 +219,7 @@ public class Controller {
 						}
 						//if XML starts with missing opening data tag (not needed actually)
 						if (openTags.isEmpty()) {
+							error = true;
 							errorString.append("Error in line ");
 							errorString.append(line - 1);
 							errorString.append(": <");
@@ -235,9 +239,10 @@ public class Controller {
 							}
 							//not correct closing after data
 							else {
+								error = true;
 								//first case: two mismatch data tags and giving favor for first
-								if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
-								&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post"))) {
+								if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post") || tag.equals("topic"))
+								&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post") || openTags.peek().equals("topic"))) {
 									errorString.append("Error in line ");
 									errorString.append(line);
 									errorString.append(": </");
@@ -253,8 +258,8 @@ public class Controller {
 									i++;
 								}
 								//second case: there's no opening data tag
-								else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post"))
-								&&!(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post"))){
+								else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post") || tag.equals("post") || tag.equals("topic"))
+								&&!(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post") || openTags.peek().equals("topic"))){
 									errorString.append("Error in line ");
 									errorString.append(line);
 									errorString.append(": <");
@@ -319,19 +324,20 @@ public class Controller {
 				if(c == '<'  && latestString.charAt(i) == '/') {
 					//getting the tag name
 					while(latestString.charAt(i) != '>') {
-						c = (char)latestString.charAt(i++);
+						c = latestString.charAt(i++);
 						if((c != '<') && (c != '>') && (c != '/')) {
 							tag += c;
 						}
 					}
 					//first openning tag missing (for now as there might be more). there might be more of it
 					if (openTags.isEmpty()) {
+						error = true;
 						errorString.append("Error in line ");
 						errorString.append(line - 1);
 						errorString.append(": <");
 						errorString.append(tag);
 						errorString.append("> missing in the beginning\n");
-						c = (char)latestString.charAt(++i);
+						c = latestString.charAt(++i);
 						i++;
 						correctTags.add("/" + tag); //handle this missing openning tag in the beginning in validation
 					}
@@ -347,6 +353,7 @@ public class Controller {
 						//error handling
 						//missing closing tags till we find it
 						else if(!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
+							error = true;
 							while (!tag.equals(openTags.peek()) && openTags.search(tag) != -1) {
 								errorString.append("Error in line ");
 								errorString.append(line - 1);
@@ -361,24 +368,26 @@ public class Controller {
 								openTags.pop();
 								tag = "";
 							}
-							c = (char)latestString.charAt(++i);
+							c = latestString.charAt(++i);
 							i++;
 						}
 						
 						else {
+							error = true;
 							errorString.append("Error in line ");
 							errorString.append(line);
 							errorString.append(": </");
 							errorString.append(tag);
 							errorString.append("> might be missing an openning tag\n");
 							tag = "";
-							c = (char)latestString.charAt(++i);
+							c = latestString.charAt(++i);
 							i++;
 						}
 					}	
 				}
 			}
 			while(!openTags.isEmpty()) {
+				error = true;
 				errorString.append("Error in line ");
 				errorString.append(line - 1);
 				errorString.append(": </");
@@ -389,104 +398,62 @@ public class Controller {
 			}
 			
 			//XML file correction and pretifying
-			StringBuilder correctString = new StringBuilder();
-			Object[] arrayTags = correctTags.toArray(); //converting the queue to array
-			String correctLine = new String();
-			String element = new String();
-			int k = 0;
-			int tagNum = 1;
-			int tagSize = correctTags.size();
-			for (i = 0; i < tagSize; i++) {
-				correctLine = (String)arrayTags[i];
-				
-				//if it's an openning tag
-				if (correctLine.charAt(0) == 'o') {
-					element = correctLine.substring(1);
-					correctString.append("<" + element + ">");
-					if (!element.equals("id") && !element.equals("name")) {
-						correctString.append("\n");
-						for (int j = 0; j < tagNum; j++) {
-							correctString.append("\t");
-						}
-					}
-					tagNum++;
-					correctTags.remove();
-				}
-				
-				//if it's data
-				else if(correctLine.charAt(0) == 'd') {
-					element = correctLine.substring(1);
-					
-					//if the data is "id"
-					if (arrayTags[i-1].equals("oid")) {
-						while (element.charAt(k) >= '0' && element.charAt(k) <= '9') {
-							correctString.append(element.charAt(k));
-							k++;
-							if (k >= element.length())
-								break;
-						}
-						k = 0;
-					}
-					
-					//if the data is "name"
-					else if (arrayTags[i-1].equals("oname")) {
-						while (element.charAt(k) != '\n' && element.charAt(k) != '\t') {
-							correctString.append(element.charAt(k));
-							k++;
-							if (k >= element.length())
-								break;
-						}
-						k = 0;
-					}
-					
-					//if the data is posts
-					else {
-						while (element.charAt(k) != '\t') {
-							correctString.append(element.charAt(k));
-							k++;
-							if (k >= element.length())
-								break;
-						}
-						k = 0;
-					}
-					tagNum++;
-				}
-				
-				//if it's closing tag
-				else if(correctLine.charAt(0) == '/') {
-					tagNum -=2;
-					element = correctLine.substring(1);
-					correctString.append("</" + element + ">\n");
-					for (int j = 1; j < tagNum; j++) {
-						correctString.append("\t");
-					}
-				}
+			if (!error) {
+				Text t = new Text("No Errors Found");
+				tfOut.getChildren().add(t);
 			}
-			
-			//re-render the tree with the correct xml
-            TreeNode parent = new TreeNode(null,null,-1,null);
-            XMLTree xmlTree = new XMLTree(parent);
-            try {
-				root=xmlTree.parseXML(correctString.toString(),0,parent);
-			} catch (IOException e) {
-				Alert alert = new Alert(AlertType.ERROR);
-    	    	alert.setTitle("ERROR");
-    	    	String s = e.getMessage();
-    	    	alert.setContentText(s);
-    	    	alert.show();
+			else {
+				StringBuilder correctString = new StringBuilder();
+				String correctLine = new String();
+				String element = new String();
+				int tagSize = correctTags.size();
+				for (i = 0; i < tagSize; i++) {	
+					correctLine = correctTags.peek();
+					//if it's an openning tag
+					if (correctLine.charAt(0) == 'o') {
+						element = correctLine.substring(1);
+						correctString.append("<" + element + ">");
+						correctTags.remove();
+					}
+					
+					//if it's data
+					else if(correctLine.charAt(0) == 'd') {
+						element = correctLine.substring(1);
+						correctString.append(element);
+						correctTags.remove();
+					}
+					
+					//if it's closing tag
+					else if(correctLine.charAt(0) == '/') {
+						element = correctLine.substring(1);
+						correctString.append("</" + element + ">\n");
+						correctTags.remove();
+					}
+				}
+				
+				//re-render the tree with the correct xml
+	            TreeNode parent = new TreeNode(null,null,-1,null);
+	            XMLTree xmlTree = new XMLTree(parent);
+	            try {
+					root=xmlTree.parseXML(correctString.toString(),0,parent);
+				} catch (IOException e) {
+					Alert alert = new Alert(AlertType.ERROR);
+	    	    	alert.setTitle("ERROR");
+	    	    	String s = e.getMessage();
+	    	    	alert.setContentText(s);
+	    	    	alert.show();
+				}
+	            root.closingBracket = "}";
+				
+	            //show the correct xml
+	            latestString.setLength(0);
+	            prettify(root.children.get(0));
+				errorString.append("\n" + "\n"+ "Error Correction" + "\n" + latestString);
+				Text t = new Text(errorString.toString());
+				tfOut.getChildren().add(t);
 			}
-            root.closingBracket = "}";
-			
-            //show the correct xml
-            latestString.setLength(0);
-            prettify(root.children.get(0));
-			errorString.append("\n" + "\n"+ "Error Correction" + "\n" + latestString);
-			
-			graph = populateGraph();
-			
-			Text t = new Text(errorString.toString());
-			tfOut.getChildren().add(t);
 		}
+		
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR");
