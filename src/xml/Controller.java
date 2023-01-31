@@ -36,6 +36,7 @@ public class Controller {
     StringBuilder errorString = new StringBuilder();
     StringBuilder latestStringCopy = new StringBuilder();
     TreeNode root = null;
+    Graph graph = null;
 	
 	void init(Stage s) {
         stage=s;
@@ -97,7 +98,7 @@ public class Controller {
         		tfIn.getChildren().add(text);
         		
     			latestStringCopy =latestStringCopy.append(latestString);
-    			populateGraph();
+    			graph = populateGraph();
         	}
         	
         	//throw an error if the file is not .xml or .txt
@@ -480,6 +481,9 @@ public class Controller {
             latestString.setLength(0);
             prettify(root.children.get(0));
 			errorString.append("\n" + "\n"+ "Error Correction" + "\n" + latestString);
+			
+			graph = populateGraph();
+			
 			Text t = new Text(errorString.toString());
 			tfOut.getChildren().add(t);
 		}
@@ -804,15 +808,87 @@ public class Controller {
 	}
 	
 	public void mostInfluencer(ActionEvent action){
+		//Check if a file has been chosen then clears the text flow output box.
+		if(fileExist){
+					
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+					
+					
+			networkAnalysis analysis = new networkAnalysis(graph);
+			String displayedString = analysis.mostInfluencerUser();
+					
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(displayedString);
+			tfOut.getChildren().add(t);
+		}
+				
+		//Give an error when there is no file path chosen.
+		else{
+					
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
 
+		}
 	}
 	
 	public void mostActive(ActionEvent action){
+		//Check if a file has been chosen then clears the text flow output box.
+		if(fileExist){
+							
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+							
+							
+			networkAnalysis analysis = new networkAnalysis(graph);
+			String displayedString = analysis.mostActiveUser();
+							
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(displayedString);
+			tfOut.getChildren().add(t);
+		}
+						
+			//Give an error when there is no file path chosen.
+		else{
+							
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
 
+		}
 	}
 	
 	public void suggestFollowers(ActionEvent action){
+		//Check if a file has been chosen then clears the text flow output box.
+		if(fileExist){
+									
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+									
+									
+			networkAnalysis analysis = new networkAnalysis(graph);
+			String displayedString = analysis.suggestFollowers();
+									
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(displayedString);
+			tfOut.getChildren().add(t);
+		}
+								
+			//Give an error when there is no file path chosen.
+		else{
+									
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
 
+		}
 	}
 
 	void savecontent(File file,String latestString) {

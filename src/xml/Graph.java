@@ -44,7 +44,6 @@ public class Graph {
 		}
 	}
 	
-	
 	public ArrayList<Integer> getUserConnections(Integer name) {
 		return graph.get(name);
 	}
