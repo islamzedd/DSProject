@@ -74,6 +74,9 @@ public class Graph {
 			int nameindex=nameMatcher.start();
 			if(followersMatcher.find(nameindex)) {
 				int followersindex=followersMatcher.start();
+				if(jsonString.charAt(followersindex+12)=='"') {
+					continue;
+				}
 				if(endMatcher.find(followersindex)) {
 					while(idMatcher.find(followersindex)) {
 						if(idMatcher.start() > endMatcher.start()) {

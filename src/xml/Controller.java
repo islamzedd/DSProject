@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -29,12 +30,18 @@ public class Controller {
 	private TextFlow tfOut = new TextFlow();
 	@FXML
 	private TextFlow tfIn = new TextFlow();
+	
+	@FXML TextField wordSearch;
+	@FXML TextField topicSearch;
+	@FXML TextField firstUser;
+	@FXML TextField secondUser;
 	private boolean fileExist = false;
 	StringBuilder str_in = new StringBuilder();  
     StringBuilder latestString = new StringBuilder();
     StringBuilder jsonString = new StringBuilder();
     StringBuilder errorString = new StringBuilder();
     StringBuilder latestStringCopy = new StringBuilder();
+    StringBuilder searchStringXML = new StringBuilder();
     TreeNode root = null;
     Graph graph = null;
 	
@@ -78,11 +85,20 @@ public class Controller {
                     }
                     
                     
-                    String stringToBeParsed =  str_in.toString();
-                    TreeNode parent = new TreeNode(null,null,-1,null);
-                    XMLTree xmlTree = new XMLTree(parent);
-                    root=xmlTree.parseXML(stringToBeParsed,0,parent);
-                    root.closingBracket = "}";
+                    try {
+                        String stringToBeParsed =  str_in.toString();
+                        TreeNode parent = new TreeNode(null,null,-1,null);
+                        XMLTree xmlTree = new XMLTree(parent);
+                        root=xmlTree.parseXML(stringToBeParsed,0,parent);
+                        root.closingBracket = "}";
+                        }
+                        catch(Exception e) {
+                        	tfOut.getChildren().clear();
+                			tfOut.setStyle(" -fx-border-color: Yellow;");
+                			Text t = new Text("This file is too corrupt please click \"Check Errors\" to fix it first \n"
+                					+ "then you can perform operations on it");
+                			tfOut.getChildren().add(t);
+                        }
         		}
         		
         	    catch (IOException e) {
@@ -98,6 +114,7 @@ public class Controller {
         		tfIn.getChildren().add(text);
         		
     			latestStringCopy =latestStringCopy.append(latestString);
+    			searchStringXML = searchStringXML.append(latestString);
     			graph = populateGraph();
         	}
         	
@@ -448,6 +465,8 @@ public class Controller {
 	            //show the correct xml
 	            latestString.setLength(0);
 	            prettify(root.children.get(0));
+	            searchStringXML.setLength(0);
+	            searchStringXML.append(latestString);
 				errorString.append("\n" + "\n"+ "Error Correction" + "\n" + latestString);
 				Text t = new Text(errorString.toString());
 				tfOut.getChildren().add(t);
@@ -849,6 +868,96 @@ public class Controller {
 			//Give an error when there is no file path chosen.
 		else{
 									
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
+
+		}
+	}
+	
+	public void searchByWord(ActionEvent a) {
+		if(fileExist){
+			System.out.println(wordSearch.getText());
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+			if(wordSearch.getText().length()==0) {
+				return;
+			}
+			postFinder pf = new postFinder(searchStringXML.toString());
+			LinkedList<LinkedList<String>> posts = pf.searchByWord(wordSearch.getText());
+			StringBuilder postsData = new StringBuilder();
+			if(posts.size()==0) {
+				postsData.append("No posts found");
+			}
+			for(LinkedList<String> post : posts) {
+				postsData.append("This was published by: "+post.get(0)+"\n");
+				postsData.append("topics:");
+				for(int i=2;i<post.size();i++) {
+					postsData.append(" "+post.get(i)+",");
+				}
+				postsData.deleteCharAt(postsData.length()-1);
+				postsData.append("\nbody:\n");
+				postsData.append(post.get(1));
+				postsData.append("\n==================================\n");
+
+			}
+			
+			
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(postsData.toString());
+			tfOut.getChildren().add(t);
+		}
+		
+		//Give an error when there is no file path chosen.
+		else{
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
+
+		}
+	}
+	
+	public void searchByTopic(ActionEvent a) {
+		
+		if(fileExist){	
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+			if(topicSearch.getText().length()==0) {
+				return;
+			}
+			postFinder pf = new postFinder(searchStringXML.toString());
+			LinkedList<LinkedList<String>> posts = pf.searchByTopic(topicSearch.getText());
+			StringBuilder postsData = new StringBuilder();
+			if(posts.size()==0) {
+				postsData.append("No posts found");
+			}
+			for(LinkedList<String> post : posts) {
+				postsData.append("This was published by: "+post.get(0)+"\n");
+				postsData.append("topics:");
+				for(int i=2;i<post.size();i++) {
+					postsData.append(" "+post.get(i)+",");
+				}
+				postsData.deleteCharAt(postsData.length()-1);
+				postsData.append("\nbody:\n");
+				postsData.append(post.get(1));
+				postsData.append("\n==================================\n");
+
+			}
+			
+			
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(postsData.toString());
+			tfOut.getChildren().add(t);
+		}
+		
+		//Give an error when there is no file path chosen.
+		else{
+			
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR");
 			String s ="Please Enter XML File First";
