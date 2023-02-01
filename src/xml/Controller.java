@@ -1,5 +1,6 @@
 package xml;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -965,6 +966,35 @@ public class Controller {
 			alert.show();
 
 		}
+	}
+	
+	public void drawGraph(ActionEvent a) {
+		Map<Integer,ArrayList<Integer>> map = graph.getGraph();
+		StringBuilder digraph=new StringBuilder();
+		for(Integer key: map.keySet()) {
+			ArrayList<Integer> values = map.get(key);
+			for(Integer value : values) {
+				digraph.append(value+"->"+key+";");
+			}
+		}
+        GraphViz.createDotGraph(digraph.toString(), "DotGraph");
+        try
+        {
+        //constructor of file class having file as argument
+        File file = new File("./output.png");
+        if(!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+        {
+        System.out.println("not supported");
+        return;
+        }
+        Desktop desktop = Desktop.getDesktop();
+        if(file.exists())         //checks file exists or not
+        desktop.open(file);              //opens the specified file
+        }
+        catch(Exception e)
+        {
+        e.printStackTrace();
+        }
 	}
 	
 	public void findMutualFollowers(ActionEvent a) {
