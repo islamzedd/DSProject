@@ -865,7 +865,7 @@ public class Controller {
 			tfOut.getChildren().add(t);
 		}
 								
-			//Give an error when there is no file path chosen.
+		//Give an error when there is no file path chosen.
 		else{
 									
 			Alert alert = new Alert(AlertType.ERROR);
@@ -879,7 +879,7 @@ public class Controller {
 	
 	public void searchByWord(ActionEvent a) {
 		if(fileExist){
-			System.out.println(wordSearch.getText());
+			//System.out.println(wordSearch.getText());
 			tfOut.getChildren().clear();
 			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
 			if(wordSearch.getText().length()==0) {
@@ -952,6 +952,39 @@ public class Controller {
 			
 			//Creating a Text t to be displayed in the text flow output.
 			Text t = new Text(postsData.toString());
+			tfOut.getChildren().add(t);
+		}
+		
+		//Give an error when there is no file path chosen.
+		else{
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			String s ="Please Enter XML File First";
+			alert.setContentText(s);
+			alert.show();
+
+		}
+	}
+	
+	public void findMutualFollowers(ActionEvent a) {
+		if(fileExist){	
+			tfOut.getChildren().clear();
+			tfOut.setStyle(" -fx-border-color: Yellow;");			//using a yellow color to highlight usage.
+			
+			if(firstUser.getText().length()==0 || secondUser.getText().length()==0) {
+				return;
+			}
+			
+			//get names of first and second user.
+			String name1 = firstUser.getText();
+			String name2 = secondUser.getText();
+			
+			networkAnalysis analysis = new networkAnalysis(graph);
+			String displayedString = analysis.mutualFollowers(name1, name2);
+			
+			//Creating a Text t to be displayed in the text flow output.
+			Text t = new Text(displayedString.toString());
 			tfOut.getChildren().add(t);
 		}
 		

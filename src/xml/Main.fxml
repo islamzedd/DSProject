@@ -98,7 +98,7 @@
             <Pane  prefHeight = "50.0" prefWidth = "450.0" layoutY="575.0" layoutX="130.0" style="-fx-background-color: snow; -fx-border-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             
          	</Pane>
-         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="582.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#searchByTopic" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Mutual" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="582.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#findMutualFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Mutual" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
