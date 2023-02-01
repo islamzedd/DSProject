@@ -31,83 +31,81 @@
             <Font size="41.0" />
          </font>
       </Label>
-      <Pane layoutY="92.0" prefHeight="319.0" prefWidth="127.0" style="-fx-background-color: snow; -fx-border-color: yellow;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="1058.0" AnchorPane.topAnchor="38.0">
-         <children>
-         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="14.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#chooseXMLFile" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Choose XML File" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="54.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#chooseXMLFile" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Choose XML File" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="56.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#minify" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Minify " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="94.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#minify" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Minify " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="99.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkXMLErrors" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Check Errors " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="134.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkXMLErrors" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Check Errors " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="143.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addXMLFormat" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Add Format" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="174.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addXMLFormat" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Add Format" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="187.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#convertJson" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Convert to JSON" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="214.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#convertJson" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Convert to JSON" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="231.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#compress" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Compress File" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="254.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#compress" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Compress File" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="274.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#decompress" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Decompress File " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="294.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#decompress" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Decompress File " textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="318.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostInfluencer" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Influencer" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="334.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostInfluencer" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Influencer" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="362.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostActive" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Active" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="374.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#mostActive" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Most Active" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="406.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#suggestFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Suggest" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="414.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#suggestFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Suggest" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" id="wordSearch" nodeOrientation="RIGHT_TO_LEFT" promptText="word" fx:id="wordSearch" layoutX="7.0" layoutY="450.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="494.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#searchByWord" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Search Word" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <TextField alignment="CENTER" id="wordSearch" nodeOrientation="RIGHT_TO_LEFT" promptText="word" fx:id="wordSearch" layoutX="23.0" layoutY="454.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="494.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#searchByWord" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Search Word" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" id="topicSearch" nodeOrientation="RIGHT_TO_LEFT" promptText="topic" fx:id="topicSearch" layoutX="7.0" layoutY="538.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
-         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="582.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#searchByTopic" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Search Topic" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <TextField alignment="CENTER" id="topicSearch" nodeOrientation="RIGHT_TO_LEFT" promptText="topic" fx:id="topicSearch" layoutX="23.0" layoutY="534.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
+         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="574.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#searchByTopic" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Search Topic" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <Pane  prefHeight = "50.0" prefWidth = "450.0" layoutY="575.0" layoutX="130.0" style="-fx-background-color: snow; -fx-border-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            
-         	</Pane>
-         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="582.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#findMutualFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Mutual" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="614.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#findMutualFollowers" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Mutual" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" id="firstUser" nodeOrientation="RIGHT_TO_LEFT" promptText="first user" fx:id="firstUser" layoutX="273.0" layoutY="582.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
-            <TextField alignment="CENTER" id="secondUser" nodeOrientation="RIGHT_TO_LEFT" promptText="second user" fx:id="secondUser" layoutX="406.0" layoutY="582.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
-         </children>
-      </Pane>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="14.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#save" prefHeight="32.0" prefWidth="127.0" style="-fx-background-color: Black;" text="Save Changes" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS" AnchorPane.bottomAnchor="635.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="1058.0" AnchorPane.topAnchor="5.0">
+            <TextField alignment="CENTER" id="firstUser" nodeOrientation="RIGHT_TO_LEFT" promptText="first user" fx:id="firstUser" layoutX="285.0" layoutY="614.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
+            <TextField alignment="CENTER" id="secondUser" nodeOrientation="RIGHT_TO_LEFT" promptText="second user" fx:id="secondUser" layoutX="416.0" layoutY="614.0" prefHeight="25.0" prefWidth="114.0" style="-fx-border-color: Black; -fx-border-width: 2px ;" />
+         	<Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="614.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#drawGraph" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: Black;" text="Draw Graph" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="14.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#save" prefHeight="32.0" prefWidth="127.0" style="-fx-background-color: Black;" text="Save Changes" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS" AnchorPane.bottomAnchor="635.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="1058.0" AnchorPane.topAnchor="5.0">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
