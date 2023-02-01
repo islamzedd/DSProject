@@ -202,7 +202,7 @@ public class Controller {
 						else {
 							//open tag was a data tag
 							if (openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") ||
-								openTags.peek().equals("post") || openTags.peek().equals("topic")) {
+								openTags.peek().equals("topic")) {
 								errorString.append("Error in line ");
 								errorString.append(line - 1);
 								errorString.append(": </");
@@ -258,8 +258,8 @@ public class Controller {
 							else {
 								error = true;
 								//first case: two mismatch data tags and giving favor for first
-								if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post") || tag.equals("topic"))
-								&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post") || openTags.peek().equals("topic"))) {
+								if ((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("topic"))
+								&&(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("topic"))) {
 									errorString.append("Error in line ");
 									errorString.append(line);
 									errorString.append(": </");
@@ -275,8 +275,8 @@ public class Controller {
 									i++;
 								}
 								//second case: there's no opening data tag
-								else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("post") || tag.equals("post") || tag.equals("topic"))
-								&&!(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("post") || openTags.peek().equals("topic"))){
+								else if((tag.equals("name") || tag.equals("id") || tag.equals("body") || tag.equals("topic"))
+								&&!(openTags.peek().equals("name") || openTags.peek().equals("id") || openTags.peek().equals("body") || openTags.peek().equals("topic"))){
 									errorString.append("Error in line ");
 									errorString.append(line);
 									errorString.append(": <");
