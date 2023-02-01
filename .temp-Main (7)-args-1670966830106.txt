@@ -1,9 +1,0 @@
---module-path
-"C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib"
---add-modules
-javafx.controls,javafx.fxml
--Dfile.encoding=UTF-8
--classpath
-"C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.base.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.controls.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.fxml.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.graphics.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.media.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.swing.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx.web.jar;C:\\Users\\PC\\Downloads\\javafx-sdk-18.0.1\\lib\\javafx-swt.jar;D:\\Projects\\DSProject\\bin"
--XX:+ShowCodeDetailsInExceptionMessages
-xml.Main
