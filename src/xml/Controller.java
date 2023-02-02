@@ -87,11 +87,11 @@ public class Controller {
                     
                     
                     try {
-                        String stringToBeParsed =  str_in.toString();
+                        /*String stringToBeParsed =  str_in.toString();
                         TreeNode parent = new TreeNode(null,null,-1,null);
                         XMLTree xmlTree = new XMLTree(parent);
                         root=xmlTree.parseXML(stringToBeParsed,0,parent);
-                        root.closingBracket = "}";
+                        root.closingBracket = "}";*/
                         }
                         catch(Exception e) {
                         	tfOut.getChildren().clear();
@@ -116,7 +116,7 @@ public class Controller {
         		
     			latestStringCopy =latestStringCopy.append(latestString);
     			searchStringXML = searchStringXML.append(latestString);
-    			graph = populateGraph();
+    			//graph = populateGraph();
         	}
         	
         	//throw an error if the file is not .xml or .txt
@@ -141,17 +141,25 @@ public class Controller {
 			latestString.setLength(0);
 			errorString.setLength(0);
 			latestString.append(latestStringCopy);
-			c = latestString.charAt(i);
+			c = latestString.charAt(i++);
 			String tag = "";
 			String data = "";
 			Stack<String> openTags = new Stack<String>();	//stack openning tags
 			Queue<String> correctTags = new LinkedList<String>();	//stack errors
 			while(i < latestString.length()) {
-				
 				if(i >= latestString.length()) break;
 				
+				//ignoring comments and version
+				if (c == '<' && (latestString.charAt(i) == '?' || latestString.charAt(i) == '!')) {
+					while (latestString.charAt(i) != '>') {
+						c = latestString.charAt(i++);
+					}
+					c = latestString.charAt(++i);
+					i++;
+				}
+				
 				//Section 1: open tag
-				if(c == '<' && (char)latestString.charAt(i) != '/') { 
+				if(c == '<' && latestString.charAt(i) != '/') {
 					//getting tag name
 					while(latestString.charAt(i) != '>') {
 						c = latestString.charAt(i++);
