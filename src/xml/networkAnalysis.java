@@ -3,6 +3,7 @@ package xml;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 public class networkAnalysis {
 	
@@ -51,13 +52,14 @@ public class networkAnalysis {
 	public String mostActiveUser() {
 		
 		analysisString.setLength(0);
+		Stack<Integer> stack = new Stack<Integer>();
 		
 		for(int i = 1; i <= analysisGraph.size(); i++) {
 			for(int j = 0; j < analysisGraph.get(key_Arr[i-1]).size(); j++) {
 				conArr.add(analysisGraph.get(key_Arr[i-1]).get(j));
 			}	
 		}
-		int checker = 0;
+		
 		for(int i = 0; i < conArr.size(); i++) {
 			int count = 0;
 			
@@ -66,19 +68,28 @@ public class networkAnalysis {
 					count++;
 				}
 			}
+			mostFreq = conArr.get(i);
 			
-			if(count >= frequency) {
+			if(count > frequency) {
 				frequency = count;
-				mostFreq = conArr.get(i);
-				if(mostFreq != checker) {
-					analysisString.append(("The most active user is " + graph.getName(mostFreq) + " of ID :  " + mostFreq
-							+ ". They are following " + frequency + " users.\n"));
-					checker = mostFreq;
-				}
 				
+				while(!stack.empty()) {
+					stack.pop();
+				}
+				stack.push(mostFreq);
+			}
+			else if(count == frequency) {
+				if(stack.search(mostFreq) == -1) {
+					stack.push(mostFreq);
+				}
 			}
 		}
 		
+		while(!stack.empty()) {
+			analysisString.append(("The most active user is " + graph.getName(stack.peek()) + " of ID :  " + stack.peek()
+					+ ". They are following " + frequency + " users.\n"));
+			stack.pop();
+		}
 		
 		return analysisString.toString();
 	}
