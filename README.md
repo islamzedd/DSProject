@@ -75,7 +75,7 @@ We iterate in the xml tree in preorder traverse way, where it checks if the node
 it prints the node name then the function calls itself on every child to that parent node from left to right and follows by the closing tag.
 If the node is a leaf (no children) then it just prints the leaf node name followed by its data, then the closing tag. 
 The format is done by adding a tab (/t) before every tag equal to its depth and start a new line (/n) after every tag.
-This is called when the [Add Format](https://github.com/islamzedd/DSProject/blob/3046634592b62cca6521e860a42b36d0000549af/src/xml/Controller.java#L53) button is clicked
+This is called when the [Add Format](https://github.com/islamzedd/DSProject/blob/3046634592b62cca6521e860a42b36d0000549af/src/xml/Controller.java#L486) button is clicked
 
 ### 5. [Convering to JSON](https://github.com/islamzedd/DSProject/blob/3046634592b62cca6521e860a42b36d0000549af/src/xml/Controller.java#L570)
 In this part the work is split amongst a few functions with the most noteable being the [pre order traverse](https://github.com/islamzedd/DSProject/blob/3046634592b62cca6521e860a42b36d0000549af/src/xml/Controller.java#L606)
