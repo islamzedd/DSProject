@@ -1,2 +1,0 @@
-digraph G {
-Yasser_Ahmed_2->Ahmed_Ali_1;Mohamed_Sherif_3->Ahmed_Ali_1;Ahmed_Ali_1->Yasser_Ahmed_2;Ahmed_Ali_1->Mohamed_Sherif_3;}

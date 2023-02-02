@@ -19,7 +19,6 @@ public class networkAnalysis {
 	int greaterFollowersCount = 0;
 	int mostFreq = 0;
 	int frequency = 0;
-	int activeMeter = 0;
 	
 	public networkAnalysis(Graph graph) {
 		this.graph = graph;
@@ -35,12 +34,12 @@ public class networkAnalysis {
 		analysisString.setLength(0);
 		
 		for(int i = 1; i <= analysisGraph.size(); i++) {
-			int followerCount = analysisGraph.get(i).size();
+			int followerCount = analysisGraph.get(key_Arr[i-1]).size();
 			greaterFollowersCount = Math.max(greaterFollowersCount, followerCount);
 		}
 		
 		for(int i = 1; i <= analysisGraph.size(); i++) {
-			if(greaterFollowersCount == analysisGraph.get(i).size()) {
+			if(greaterFollowersCount == analysisGraph.get(key_Arr[i-1]).size()) {
 				analysisString.append(("The most influencer user is " + graph.getName(key_Arr[i-1]) + " of ID :  " + 
 										key_Arr[i-1] + ". They have a follower count of " + greaterFollowersCount + " followers.\n"));
 			}
@@ -54,11 +53,11 @@ public class networkAnalysis {
 		analysisString.setLength(0);
 		
 		for(int i = 1; i <= analysisGraph.size(); i++) {
-			for(int j = 0; j < analysisGraph.get(i).size(); j++) {
-				conArr.add(analysisGraph.get(i).get(j));
+			for(int j = 0; j < analysisGraph.get(key_Arr[i-1]).size(); j++) {
+				conArr.add(analysisGraph.get(key_Arr[i-1]).get(j));
 			}	
 		}
-		
+		int checker = 0;
 		for(int i = 0; i < conArr.size(); i++) {
 			int count = 0;
 			
@@ -68,14 +67,18 @@ public class networkAnalysis {
 				}
 			}
 			
-			if(count > frequency) {
+			if(count >= frequency) {
 				frequency = count;
 				mostFreq = conArr.get(i);
+				if(mostFreq != checker) {
+					analysisString.append(("The most active user is " + graph.getName(mostFreq) + " of ID :  " + mostFreq
+							+ ". They are following " + frequency + " users.\n"));
+					checker = mostFreq;
+				}
+				
 			}
 		}
 		
-		analysisString.append(("The most active user is " + graph.getName(mostFreq) + " of ID :  " + mostFreq
-								+ ". They are following " + frequency + " users.\n"));
 		
 		return analysisString.toString();
 	}
@@ -86,42 +89,51 @@ public class networkAnalysis {
 		
 		for(int i = 1; i <= analysisGraph.size(); i++) {
 			analysisString.append("User " + graph.getName(key_Arr[i-1]) + " of ID (" + key_Arr[i-1] + ") :  ");
-			//System.out.println("size: " + analysisGraph.get(i).size());
 			
-			for(int j = 0; j < analysisGraph.get(i).size(); j++) {
-				int follower_Id = analysisGraph.get(i).get(j);
-				//System.out.println(id);
-				
-				for(int k = 0; k < analysisGraph.get(follower_Id).size(); k++) {
-					int followerOfFollowerID = analysisGraph.get(follower_Id).get(k);
+			if(analysisGraph.get(key_Arr[i-1]).size() == 0) {
+				analysisString.append("The user has no followers. \n");
+			}
+			else {
+				for(int j = 0; j < analysisGraph.get(key_Arr[i-1]).size(); j++) {
 					
-					if( graph.getName(followerOfFollowerID).equals( graph.getName(key_Arr[i-1]) ) ) {
-						if(analysisGraph.get(follower_Id).size() == 1) {
-							analysisString.append("Can't find more users for them to follow from user :  "
-													+ graph.getName(follower_Id) + ". ");
-						}
-						else {
-							continue;
-						}
-					}
-					
-					else {
-						analysisString.append("may like to follow user/s :  " + graph.getName(followerOfFollowerID)
-												+ " of ID (" + followerOfFollowerID + ")");
+					if(this.contain(key_Arr, analysisGraph.get(key_Arr[i-1]).get(j))) {
+						int follower_Id = analysisGraph.get(key_Arr[i-1]).get(j);
 						
-						if(k == analysisGraph.get(follower_Id).size() - 1) {
-							analysisString.append(".");
-						}
-						else{
-							analysisString.append(", ");
+						for(int k = 0; k < analysisGraph.get(follower_Id).size(); k++) {
+							int followerOfFollowerID = analysisGraph.get(follower_Id).get(k);
+							
+							if( followerOfFollowerID == (key_Arr[i-1]) ) 
+							{
+								if(analysisGraph.get(follower_Id).size() == 1) {
+									analysisString.append("Can't find more users for them to follow from user :  "
+															+ graph.getName(follower_Id) + ". ");
+								}
+								else {
+									continue;
+								}
+							}
+							else if(analysisGraph.get(key_Arr[i-1]).contains(followerOfFollowerID)) {
+								analysisString.append("Can't find more users for them to follow from user :  "
+										+ graph.getName(follower_Id) + ". ");
+							}
+							
+							else {
+								analysisString.append("may like to follow user/s :  " + graph.getName(followerOfFollowerID)
+														+ " of ID (" + followerOfFollowerID + ")");
+								
+								if(k == analysisGraph.get(follower_Id).size() - 1) {
+									analysisString.append(".");
+								}
+								else{
+									analysisString.append(", ");
+								}
+							}
 						}
 					}
 				}
-				
+				analysisString.append("\n");
 			}
-			analysisString.append("\n");
 		}
-		
 		return analysisString.toString();
 	}
 
@@ -172,6 +184,15 @@ public class networkAnalysis {
 	        return false;
 	    }
 	    return true;
+	}
+	
+	public boolean contain(Integer[] key_Arr2, int toCheckValue) {
+		for (int element : key_Arr2) {
+		    if (element == toCheckValue) {
+		        return true;
+		    }
+		}
+		return false;
 	}
 	
 }
