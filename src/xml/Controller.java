@@ -87,11 +87,11 @@ public class Controller {
                     
                     
                     try {
-                        /*String stringToBeParsed =  str_in.toString();
+                        String stringToBeParsed =  str_in.toString();
                         TreeNode parent = new TreeNode(null,null,-1,null);
                         XMLTree xmlTree = new XMLTree(parent);
                         root=xmlTree.parseXML(stringToBeParsed,0,parent);
-                        root.closingBracket = "}";*/
+                        root.closingBracket = "}";
                         }
                         catch(Exception e) {
                         	tfOut.getChildren().clear();
@@ -116,7 +116,7 @@ public class Controller {
         		
     			latestStringCopy =latestStringCopy.append(latestString);
     			searchStringXML = searchStringXML.append(latestString);
-    			//graph = populateGraph();
+    			graph = populateGraph();
         	}
         	
         	//throw an error if the file is not .xml or .txt
