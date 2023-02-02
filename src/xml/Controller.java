@@ -974,8 +974,7 @@ public class Controller {
 		for(Integer key: map.keySet()) {
 			ArrayList<Integer> values = map.get(key);
 			for(Integer value : values) {
-				digraph.append(value+"->"+key+";");
-			}
+				digraph.append(graph.getName(value).replaceAll(" ","_")+"_"+value+"->"+graph.getName(key).replaceAll(" ","_")+"_"+key+";");			}
 		}
         GraphViz.createDotGraph(digraph.toString(), "DotGraph");
         try
